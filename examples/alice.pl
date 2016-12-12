@@ -9,50 +9,50 @@
 % The top predicate is loop/0, and examples of category definitions
 % are:
 %
- category([
-	   pattern([can,you,star(A),'?']),
-	   template(['I', 'don''t', really, know, if,'I','can', A,
-	 	     but,'I''m', very, good, at, swimming])
-	  ]).
-
- category([
-	   pattern([yes]),
-	   that([do, you, like, movies,'?']),
-	   template(['What', is, your, favourite, movie, '?'])
-	  ]).
-
- category([
-	   pattern([star(_),i,have,no,star(A)]),
-	   template([think(set_var(it,A)),
-		     'I',see,'.','Would',you,like,
-		     to,have,it,'?'])
-	  ]).
-
- category([
-	   pattern([yes]),
-	   that([star(_),'Would',you,like,to,have,it,'?']),
-	   template([think(get_var(it,V)),
-		     'Where',do,you,usually,get,V,'?'])
-	   ]).
-
- category([
-	   pattern([star(A),alice]),
-	   template([srai(A)])
-          ]).
-
- category([
-	   pattern([i,like,star(A),with,syntax(np(B)),star(C)]),
-	   template(['Did',you,say,C,'?','I',also,like,A,with,B,
-		     think(set_var(it,A))])
-         ]).
-
- category([
-	   pattern([star(_)]),
-	   template([random([
-		 	     [tell,me,more,about,think(get_var(it,V)),V],
-			     [do,you,like,dancing,'?']])])
-          ]).
-
+% category([
+%	   pattern([can,you,star(A),'?']),
+%	   template(['I', 'don''t', really, know, if,'I','can', A,
+%	 	     but,'I''m', very, good, at, swimming])
+%	  ]).
+%
+% category([
+%	   pattern([yes]),
+%	   that([do, you, like, movies,'?']),
+%	   template(['What', is, your, favourite, movie, '?'])
+%	  ]).
+%
+% category([
+%	   pattern([star(_),i,have,no,star(A)]),
+%	   template([think(set_var(it,A)),
+%		     'I',see,'.','Would',you,like,
+%		     to,have,it,'?'])
+%	  ]).
+%
+% category([
+%	   pattern([yes]),
+%	   that([star(_),'Would',you,like,to,have,it,'?']),
+%	   template([think(get_var(it,V)),
+%		     'Where',do,you,usually,get,V,'?'])
+%	   ]).
+%
+% category([
+%	   pattern([star(A),alice]),
+%	   template([srai(A)])
+%          ]).
+%
+% category([
+%	   pattern([i,like,star(A),with,syntax(np(B)),star(C)]),
+%	   template(['Did',you,say,C,'?','I',also,like,A,with,B,
+%		     think(set_var(it,A))])
+%         ]).
+%
+% category([
+%	   pattern([star(_)]),
+%	   template([random([
+%		 	     [tell,me,more,about,think(get_var(it,V)),V],
+%			     [do,you,like,dancing,'?']])])
+%          ]).
+%
 %=======================================================================
 
 :- use_module(library(lists),[member/2,nth0/3,append/3]).
