@@ -12,6 +12,11 @@ category([
 ]).
 
 category([
+	pattern([Do,you,eat,pudding,'?']),
+	template(['No', but , you, do, '!'])
+]).
+
+category([
 	pattern([who,is,alan,turing,'?']),
 	template(['Alan Mathison Turing',was,a,'British',mathematician,',',logician,',',cryptanalyst,',',philosopher,',',computer,scientist,',',mathematical,biologist,',',and,marathon,and,ultra,distance,runner,'.'])
 ]).
