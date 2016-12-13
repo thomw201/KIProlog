@@ -12,7 +12,7 @@ category([
 ]).
 
 category([
-	pattern([for,what,platform,is,star([Game]),'?']),
+	pattern([for,what,platform,is,star(Game),'?']),
 	%template([think((testeroni(Platform,Game))), 'The', game, Game, was, released, on, the, Platform, '.'])
 	template(['Fuck you!'])
 ]).
