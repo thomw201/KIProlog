@@ -17,12 +17,21 @@ temperature(City,Temp) :-
  member(temp=T,W),
  Temp is round(T - 273.15).
  
-testerino(City, Out) :-
- username(U), password(P),
- format(atom(HREF),'http://webservices.ns.nl/ns-api-avt?station=~s',[City]),
- http_open(HREF,Xml,[authorization(basic(U,P))]),
- copy_stream_data(Xml, user_output),
- close(Xml).
+testerino(Out) :-
+   http_open('http://thegamesdb.net/api/GetGamesList.php?name=mario', Xml, []),
+   %copy_stream_data(Xml, user_output),
+   load_xml(stream(Xml),Out,[]),
+   close(Xml).
+   
+testeroni(Platform,Game) :-
+	testerino(O),
+	xpath(O,//'Game',P),
+	xpath(P,//'Platform',X),
+	xpath(P,//'GameTitle',Y),
+	
+	X = element('Platform',[],[Platform]),
+	Y = element('GameTitle',[],[Game]).
+	
 
 % http://www.ns.nl/api/api
 % http://webservices.ns.nl/ns-api-avt?station=${Naam of afkorting Station}
