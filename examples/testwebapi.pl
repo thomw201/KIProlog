@@ -31,7 +31,9 @@ testeroni(Platform,Game) :-
 	
 	X = element('Platform',[],[Platform]),
 	Y = element('GameTitle',[],[Game]).
-	
+
+playsound :-
+		process_create(path(vlc), ['Person.wav', 'vlc://quit'], []).
 
 % http://www.ns.nl/api/api
 % http://webservices.ns.nl/ns-api-avt?station=${Naam of afkorting Station}
