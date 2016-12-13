@@ -12,8 +12,9 @@ category([
 ]).
 
 category([
-	pattern([Do,you,eat,pudding,'?']),
-	template(['No', but , you, do, '!'])
+	pattern([for,what,platform,is,star([Game]),'?']),
+	%template([think((testeroni(Platform,Game))), 'The', game, Game, was, released, on, the, Platform, '.'])
+	template(['Fuck you!'])
 ]).
 
 category([
@@ -66,12 +67,17 @@ category([
 category([
 	pattern([star(_),sound,star(_)]),
 	template(['Okay!',
-		think(process_create(path(play), ['emergency.mp3'], [stderr(null)]))])
+		think(process_create(path(vlc), ['emergency.mp3', 'vlc://quit'], []))])
 ]). 
 
 category([
 	pattern([are,you,afraid,of,syntax(np,NP),'?']),
 	template(['Why',would,'I',be,afraid,of,NP,'?!'])
+]).
+
+category([
+	pattern([quit]),
+	template(['Goodbye!', think(break)])
 ]).
 
 category([
@@ -82,6 +88,8 @@ category([
 		[do,you,like,dancing,'?']])
 	])
 ]).
+
+
 
 % Family tree
 female(helen).
@@ -121,6 +129,7 @@ temperature(City,Temp) :-
 	member(main=json(W),R), 
 	member(temp=T,W), 
 	Temp is round(T - 273.15).
+	
 
 np --> art, noun.
 
