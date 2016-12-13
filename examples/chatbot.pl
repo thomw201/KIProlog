@@ -15,8 +15,8 @@ category([
 
 category([
 	pattern([for,what,platform,is,star(Game),'?']),
-	%template([think((testeroni(Platform,Game))), 'The', game, Game, was, released, on, the, Platform, '.'])
-	template(['Fuck you!'])
+	template([think(testastorone(Platforms,Game)),Platforms,poep,Game])
+	%template(['Fuck you!'])
 ]).
 
 category([

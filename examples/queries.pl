@@ -31,6 +31,12 @@ testeroni(Platform,Game) :-
 	
 	X = element('Platform',[],[Platform]),
 	Y = element('GameTitle',[],[Game]).
+	
+testerpino(Platform,Games) :-
+    findall(X, testeroni(Platform,X), Games).
+	
+testastorone(Platforms,Game) :-
+    findall(X, testeroni(X,Game), Platforms).
 
 playsound :-
 		process_create(path(vlc), ['Person.wav', 'vlc://quit', '--qt-start-minimized'], []).
