@@ -5,6 +5,8 @@
 
 :- consult([alice]).
 
+:- consult([queries]).
+
 category([
 	pattern([can,you,star(A),'?']),
 	template(['I', 'don''t', really, know, if,'I','can', A,
@@ -120,15 +122,6 @@ father_of(X,Y) :- male(X),
                   parent_of(X,Y).
 mother_of(X,Y) :- female(X),
                   parent_of(X,Y).
-
-% http://openweathermap.org/
-temperature(City,Temp) :-
-	format(atom(HREF),'http://api.openweathermap.org/data/2.5/weather?q=~s',[City]),
-	http_get(HREF,Json,[]),
-	atom_json_term(Json,json(R),[]),
-	member(main=json(W),R), 
-	member(temp=T,W), 
-	Temp is round(T - 273.15).
 	
 
 np --> art, noun.
