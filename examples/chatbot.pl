@@ -90,7 +90,7 @@ category([
 %give release date of game
 category([
 	pattern([star(_), release, date, of,star(Game),'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),getreleasedate(NewGame, Releasedate))),Game, was, released, in, Releasedate,'.'])
+	template([think((atomic_list_concat(Game,' ',NewGame),getreleasedate(NewGame, Releasedate))),Game, was, released, on, Releasedate,'.'])
 ]).
 
 %get game's rating
