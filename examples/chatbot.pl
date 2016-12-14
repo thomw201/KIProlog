@@ -142,7 +142,6 @@ category([
     pattern([star(A)]),
     that(['What',is,your,favourite,video,game,'?']),
     template(['I',agree,'!',A,is,awesome,'!'])
-	%template(['it Worked!', A])
 ]).
 
 category([
