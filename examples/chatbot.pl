@@ -13,6 +13,56 @@ category([
 	template([Description,think((atomic_list_concat(Game,' ',NewGame),getdescriptionofgame(NewGame, Description)))])
 ]).
 
+
+%ask if user wants more info
+category([
+    pattern([star(_),information,star(_)]),
+    template(['Do',you,want,information,about,a,game,'?'])
+]).
+
+%user said yes, ask the game name
+category([
+    pattern([yes]),
+    that(['Do',you,want,information,about,a,game,'?']),
+    template(['Which',game,do,you,want,to,know,more,about,'?'])
+]).
+
+%give information according to the given game name
+category([
+    pattern([star(A)]),
+    that(['Which',game,do,you,want,to,know,more,about,'?']),
+    template(['Here', is, some, information, about, A,Description,think((atomic_list_concat(A,' ',NewGame),getdescriptionofgame(NewGame, Description)))])
+	%template(['it Worked!', A])
+]).
+
+%user said no, ask if he wants other information
+category([
+    pattern([no]),
+    that(['Do',you,want,information,about,a,game,'?']),
+    template(['Do',you,want,information,about,a,console,'?'])
+]).
+
+%user wants more console info, ask which console
+category([
+    pattern([yes]),
+    that(['Do',you,want,information,about,a,console,'?']),
+    template(['Which',console,do,you,want,to,know,more,about,'?'])
+]).
+
+%give information according to the given console name
+category([
+    pattern([star(A)]),
+    that(['Which',console,do,you,want,to,know,more,about,'?']),
+    template(['Here',is,some,information,about,the, A,Description,think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description)))])
+]).
+
+%user said no
+category([
+    pattern([no]),
+    that(['Which',console,do,you,want,to,know,more,about,'?']),
+    template(['Ask',me,anytime,'!'])
+]).
+
 %play the game theme sound
 category([
 	pattern([star(_),play,the,theme,of,star(Game),'?']),
@@ -87,7 +137,13 @@ category([
 	%template(['it Worked!',Game])
 ]).
 
-
+%user told me his favourite video game
+category([
+    pattern([star(A)]),
+    that(['What',is,your,favourite,video,game,'?']),
+    template(['I',agree,'!',A,is,awesome,'!'])
+	%template(['it Worked!', A])
+]).
 
 category([
 	pattern([quit]),
@@ -97,9 +153,10 @@ category([
 category([
 	pattern([star(_)]),
 	template([random([
-		[so,what,is,your,horoscope,'?'],
-		[do,you,like,movies,'?'],
-		[do,you,like,dancing,'?']])
+		['Do',you,want,information,about,a,game,'?'],
+		['Do',you,want,information,about,a,console,'?'],
+		['What',is,your,favourite,video,game,'?'],
+		['Do',you,like,mario,'?']])
 	])
 ]).
 
