@@ -4,97 +4,58 @@
 % For xml functions
 :- use_module(library('xpath')).
 :- use_module(library('sgml')).
-
-username('aswin_f@hotmail.com').
-password('EXObqXHVjyB_7I9awF3zyWQSvRmfuERW_3kqDuS2oSOiG5YToO-uQg').
-
-% http://openweathermap.org/
-temperature(City,Temp) :-
- format(atom(HREF),'http://api.openweathermap.org/data/2.5/weather?q=~s',[City]),
- http_get(HREF,Json,[]),
- atom_json_term(Json,json(R),[]),
- member(main=json(W),R),
- member(temp=T,W),
- Temp is round(T - 273.15).
  
-testerino(Out) :-
-   http_open('http://thegamesdb.net/api/GetGamesList.php?name=mario', Xml, []),
+getgame(GameName,Out) :-
+   format(atom(HREF),'http://thegamesdb.net/api/GetGame.php?name=~s',[GameName]),
+   http_open(HREF, Xml, []),
    %copy_stream_data(Xml, user_output),
    load_xml(stream(Xml),Out,[]),
    close(Xml).
    
-testeroni(Platform,Game) :-
-	testerino(O),
+%you can only get the platform information of a game here, not the otherway around.   
+getplatformofgame(Game,Platform) :-
+	getgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(P,//'Platform',X),
 	xpath(P,//'GameTitle',Y),
 	
-	X = element('Platform',[],[Platform]),
-	Y = element('GameTitle',[],[Game]).
+	X = element('Platform',[],[Console]),
+	Y = element('GameTitle',[],[Title]),
 	
-testerpino(Platform,Games) :-
-    findall(X, testeroni(Platform,X), Games).
+	downcase_atom(Console,LConsole),
+	downcase_atom(Title,LTitle),
 	
-testastorone(Platforms,Game) :-
-    findall(X, testeroni(X,Game), Platforms).
+	LConsole = Platform,
+	LTitle = Game.
 
-playsound :-
+	
+getdeveloperofgame(Game,Developer) :-	
+	getgame(Game,O),
+	xpath(O,//'Game',P),
+	xpath(P,//'Developer',X),
+	xpath(P,//'GameTitle',Y),
+	
+	X = element('Developer',[],[Maker]),
+	Y = element('GameTitle',[],[Title]),
+	
+	downcase_atom(Maker,LMaker),
+	downcase_atom(Title,LTitle),
+	
+	LMaker = Developer,
+	LTitle = Game.
+	
+showvideoofgame(Game) :-	
+	getgame(Game,O),
+	xpath(O,//'Game',P),
+	xpath(P,//'Youtube',X),
+	
+	X = element('Youtube',[],[Url]),
+	
+	process_create(path(vlc), [Url, 'vlc://quit'], []).
+	
+
+	
+
+itsame :-
 		process_create(path(vlc), ['Person.wav', 'vlc://quit', '--qt-start-minimized'], []).
-
-% http://www.ns.nl/api/api
-% http://webservices.ns.nl/ns-api-avt?station=${Naam of afkorting Station}
-trains_from(City, Out) :-
- username(U), password(P),
- format(atom(HREF),'http://webservices.ns.nl/ns-api-avt?station=~s',[City]),
- http_open(HREF,Xml,[authorization(basic(U,P))]),
- copy_stream_data(Xml, user_output),
- load_xml(stream(Xml), Out, []),
- close(Xml).
-
-next_train_from_to(From,To,Time) :-
- trains_from(From,O), 
- xpath(O,//'VertrekkendeTrein',P), 
- xpath(P,//'EindBestemming',Q), 
- Q = element('EindBestemming',[],[City]),
- downcase_atom(City,LCase),
- LCase = To,
- xpath(P,//'VertrekTijd',element('VertrekTijd', [], [Time])).
-
-% http://www.omdbapi.com/
-director(Name, Result) :-
-        format(atom(HREF), 'http://www.omdbapi.com?t=~s', [Name]),
-        http_get(HREF,Json,[]),
-        atom_json_term(Json, json(R),[]),
-        member('Director'=Result,R).
-
-% http://fixer.io/
-exchange(From,To,Amount,Result) :-
-        upcase_atom(From,UFrom), upcase_atom(To,UTo),
-        format(atom(HREF), 'http://api.fixer.io/latest?base=~s&symbols=~s', [UFrom,UTo]),
-        http_get(HREF,Json,[]),
-        atom_json_term(Json,json(R),[]),
-        member(rates=json([_W=Value]),R),
-        Result is Value * Amount.
-
-% http://ip-api.com/docs/
-geoIP(Country,City,Region,Zip,Lat,Lon) :-
-        http_get('http://ip-api.com/json',Json,[]),
-        atom_json_term(Json,json(R),[]),
-        member('city'=City,R),
-        member('country'=Country,R),
-        member('regionName'=Region,R),
-        member('zip'=Zip,R),
-        member('lat'=Lat,R),
-        member('lon'=Lon,R).
-
-geoIP(IP,Country,City,Region,Zip,Lat,Lon) :-
-        format(atom(HREF),'http://ip-api.com/json/~s',[IP]),
-        http_get(HREF,Json,[]),
-        atom_json_term(Json,json(R),[]),
-        member('city'=City,R),
-        member('country'=Country,R),
-        member('regionName'=Region,R),
-        member('zip'=Zip,R),
-        member('lat'=Lat,R),
-        member('lon'=Lon,R).
 
