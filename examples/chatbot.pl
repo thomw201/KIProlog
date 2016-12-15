@@ -9,7 +9,7 @@
 
 %give description of game
 category([
-	pattern([star(_),tell,me,about,star(Game),'?']),
+	pattern([star(_),tell,me,about,star(Game),star(_)]),
 	template([think((atomic_list_concat(Game,' ',NewGame),getdescriptionofgame(NewGame, Description))),Description])
 ]).
 
@@ -31,7 +31,7 @@ category([
 category([
     pattern([star(A)]),
     that(['Which',game,do,you,want,to,know,more,about,'?']),
-    template(['Here', is, some, information, about, A,Description,think((atomic_list_concat(A,' ',NewGame),getdescriptionofgame(NewGame, Description)))])
+    template([think((atomic_list_concat(A,' ',NewGame),getdescriptionofgame(NewGame, Description))),Description])
 	%template(['it Worked!', A])
 ]).
 
@@ -53,7 +53,7 @@ category([
 category([
     pattern([star(A)]),
     that(['Which',console,do,you,want,to,know,more,about,'?']),
-    template(['Here',is,some,information,about,the, A,Description,think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description)))])
+    template([think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description))), Description])
 ]).
 
 %user said no
@@ -137,6 +137,20 @@ category([
     template(['I',agree,'!',A,is,awesome,'!'])
 ]).
 
+%user awnsers yes to a video
+category([
+    pattern([yes]),
+    that(['Do',you,want,to,see,a,video,'?']),
+    template(['What',game,video,do,you,want,me,to,play,for,you,'?'])
+]).
+
+
+category([
+    pattern([star(A)]),
+    that(['What',game,video,do,you,want,me,to,play,for,you,'?']),
+    template(['Here', is, a, video, of, A,think((atomic_list_concat(A,' ',NewGame),showvideoofgame(NewGame)))])
+]).
+
 category([
 	pattern([quit]),
 	template(['Goodbye!', think(break)])
@@ -148,6 +162,7 @@ category([
 		['Do',you,want,information,about,a,game,'?'],
 		['Do',you,want,information,about,a,console,'?'],
 		['What',is,your,favourite,video,game,'?'],
+		['Do',you,want,to,see,a,video,'?'],
 		['Do',you,like,mario,'?']])
 	])
 ]).
