@@ -203,38 +203,43 @@ showvideoofgame(Game) :-
 	X = element('Youtube',[],[Url]),
 	
 	process_create(path(vlc), [Url, 'vlc://quit','--fullscreen'], []).
+
+getpictureofgame(Game, Url) :-
+         getexactgame(Game,O),
+         xpath(O,//'Game',P),
+         xpath(O,//'baseImgUrl',element('baseImgUrl',[],[Baseurl])),
+         xpath(P,//'Images'/screenshot/original ,element(original,_,[Extendurl])),
+		 atom_concat(Baseurl,Extendurl,Url).
 	
-showvideoofgame(Game) :-	
-	getgame(Game,O),
-	xpath(O,//'Game',P),
-	xpath(P,//'Youtube',X),
+getpictureofgame(Game, Url) :-
+         getexactgame(Game,O),
+         xpath(O,//'Game',P),
+         xpath(O,//'baseImgUrl',element('baseImgUrl',[],[Baseurl])),
+         xpath(P,//'Images'/boxart,element(boxart,_,[Extendurl])),
+		 atom_concat(Baseurl,Extendurl,Url).
+		 
+getpictureofgame(Game, Url) :-
+         getexactgame(Game,O),
+         xpath(O,//'Game',P),
+         xpath(O,//'baseImgUrl',element('baseImgUrl',[],[Baseurl])),
+         xpath(P,//'Images'/banner,element(banner ,_,[Extendurl])),
+		 atom_concat(Baseurl,Extendurl,Url).
 	
-	
-	X = element('Youtube',[],[Url]),
-	
-	process_create(path(vlc), [Url, 'vlc://quit','--fullscreen'], []).
-	
-getpicturesofgame(Game, Y) :-
-	getexactgame(Game,O),
-	xpath(O,//'Game',P),
-	xpath(O,//'baseImgUrl',X),
-	xpath(P,//'Images',Y),
-	writeln(Y).
-	
-	
-	%X = element('baseImgUrl',[],[Baseurl]),
-	%Y = element('Images',[],[Bleh]).
-	%atomic_list_concat(List,' ',NewGame).
-	%atom_concat(Baseurl,Extendurl,Url).
-	
-	%process_create(path(vlc), [Url, 'vlc://quit', '--fullscreen'], []).
+getpictureofgame(Game, Url) :-
+         getexactgame(Game,O),
+         xpath(O,//'Game',P),
+         xpath(O,//'baseImgUrl',element('baseImgUrl',[],[Baseurl])),
+         xpath(P,//'Images'/fanart/orginal,element(orginal,_,[Extendurl])),
+		 atom_concat(Baseurl,Extendurl,Url).
+
+		 
+		 
+		 
+showpicturesofgame(Game) :-
+	findall(G,getpictureofgame(Game,G),All),
+	append(All,['vlc://quit','--fullscreen'],Arg),
+	process_create(path(vlc), Arg, []).
 		
 
 itsame :-
 		process_create(path(vlc), ['Person.wav', 'vlc://quit', '--qt-start-minimized'], []).
-
-substring(X,S) :-
-  append(_,T,S) ,
-  append(X,_,T) ,
-  X \= []
-  .
