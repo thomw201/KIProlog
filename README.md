@@ -12,17 +12,18 @@ Rules:
 
 
 Questions:
-Tell me about <gamename>
-Picture of <gamename>?
-Highest rated <gamename> game?
-Video of <gamename>?
-Developer of <gamename>?
-How many players <gamename>?
-Publisher of <gamename>?
-Release date of <gamename>?
-Was <gamename> released?
-Rating of <gamename>?
-What platform is <gamename>?
+
+- Tell me about <gamename>
+- Picture of <gamename>?
+- Highest rated <gamename> game?
+- Video of <gamename>?
+- Developer of <gamename>?
+- How many players <gamename>?
+- Publisher of <gamename>?
+- Release date of <gamename>?
+- Was <gamename> released?
+- Rating of <gamename>?
+- What platform is <gamename>?
 
 
 <information> keyword asks if you want information about a game or console
