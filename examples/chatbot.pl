@@ -63,6 +63,14 @@ category([
     template([think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description))), Description])
 ]).
 
+
+%give information according to the given console name
+category([
+    pattern([star(_),can,you,tell,me,about,the,star(A),platform,'?']),
+    template([think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description))), Description])
+]).
+
+
 %give developer of game
 category([
 	pattern([star(_),developer,of,star(Game),'?']),
@@ -84,7 +92,7 @@ category([
 %give favourite game on the named platform
 category([
 	pattern([star(_), favourite, game, of,star(Platform),'?']),
-	template([think((atomic_list_concat(Platform,' ',NewPlatform),getfavgame(NewPlatform, Favgame))),'My', favourite, game, on, the, Platform , is , Favgame]) %highest rated game on platform
+	template([think((atomic_list_concat(Platform,' ',NewPlatform),getfavplatformgame(NewPlatform, Favgame))),'My', favourite, game, on, the, Platform , is , Favgame]) %highest rated game on platform
 ]).
 
 %give release date of game
@@ -126,14 +134,12 @@ category([
 category([
 	pattern(['Who',are, you,'?']),
 	template([think(itsame)])
-	%template(['it Worked!',Game])
 ]).
 
 
 category([
 	pattern([for,what,platform,is,star(Game),'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),getplatformofgame(NewGame,Platform))),Game, has, been, released, on, Platform])
-	%template(['it Worked!',Game])
 ]).
 
 %user told me his favourite video game

@@ -6,15 +6,47 @@
 :- use_module(library('sgml')).
  
 getgame(GameName,Out) :-
-   format(atom(HREF),'http://thegamesdb.net/api/GetGame.php?name=~s',[GameName]),
+   split_string(GameName, " ", "", Words),
+   atomic_list_concat(Words, '%20', UrlGameName),
+   format(atom(HREF),'http://thegamesdb.net/api/GetGame.php?name=~s',[UrlGameName]),
+   http_open(HREF, Xml, []),
+   %copy_stream_data(Xml, user_output),
+   load_xml(stream(Xml),Out,[]),
+   close(Xml).
+
+getexactgame(GameName,Out) :-
+   split_string(GameName, " ", "", Words),
+   atomic_list_concat(Words, '%20', UrlGameName),
+   format(atom(HREF),'http://thegamesdb.net/api/GetGame.php?exactname=~s',[UrlGameName]),
    http_open(HREF, Xml, []),
    %copy_stream_data(Xml, user_output),
    load_xml(stream(Xml),Out,[]),
    close(Xml).
    
+getgamelist(GameName,Out) :-
+   format(atom(HREF),'http://thegamesdb.net/api/GetGamesList.php?name=~s',[GameName]),
+   http_open(HREF, Xml, []),
+   %copy_stream_data(Xml, user_output),
+   load_xml(stream(Xml),Out,[]),
+   close(Xml).
+   
+getplatformlist(Out):-
+   http_open('http://thegamesdb.net/api/GetPlatformsList.php', Xml, []),
+   %copy_stream_data(Xml, user_output),
+   load_xml(stream(Xml),Out,[]),
+   close(Xml).
+   
+getplatform(ID,Out):-
+   format(atom(HREF),'http://thegamesdb.net/api/GetPlatform.php?id=~s',[ID]),
+   http_open(HREF, Xml, []),
+   %copy_stream_data(Xml, user_output),
+   load_xml(stream(Xml),Out,[]),
+   close(Xml).
+
+   
 %you can only get the platform information of a game here, not the otherway around.   
 getplatformofgame(Game,Platform) :-
-	getgame(Game,O),
+	getexactgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(P,//'Platform',X),
 	xpath(P,//'GameTitle',Y),
@@ -30,7 +62,7 @@ getplatformofgame(Game,Platform) :-
 
 	
 getdeveloperofgame(Game,Developer) :-	
-	getgame(Game,O),
+	getexactgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(P,//'Developer',X),
 	xpath(P,//'GameTitle',Y),
@@ -45,7 +77,7 @@ getdeveloperofgame(Game,Developer) :-
 	LTitle = Game.
 	
 getdescriptionofgame(Game, Description) :-
-	getgame(Game,O),
+	getexactgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(P,//'Overview',X),
 	xpath(P,//'GameTitle',Y),
@@ -54,11 +86,12 @@ getdescriptionofgame(Game, Description) :-
 	Y = element('GameTitle',[],[Title]),
 	
 	downcase_atom(Title,LTitle),
+	downcase_atom(Game,LGame),
 	
-	LTitle = Game.
+	LTitle = LGame.
 	
 getplayers(Game, Players) :-
-	getgame(Game,O),
+	getexactgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(P,//'Players',X),
 	xpath(P,//'GameTitle',Y),
@@ -73,7 +106,7 @@ getplayers(Game, Players) :-
 	LTitle = Game.
 	
 getpublisher(Game, Publisher) :-
-	getgame(Game,O),
+	getexactgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(P,//'Publisher',X),
 	xpath(P,//'GameTitle',Y),
@@ -88,7 +121,7 @@ getpublisher(Game, Publisher) :-
 	LTitle = Game.
 
 getreleasedate(Game, Releasedate) :-
-	getgame(Game,O),
+	getexactgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(P,//'ReleaseDate',X),
 	xpath(P,//'GameTitle',Y),
@@ -103,7 +136,7 @@ getreleasedate(Game, Releasedate) :-
 	LTitle = Game.
 	
 getratingofgame(Game, Rating) :-
-	getgame(Game,O),
+	getexactgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(P,//'Rating',X),
 	xpath(P,//'GameTitle',Y),
@@ -116,6 +149,59 @@ getratingofgame(Game, Rating) :-
 	
 	LRate = Rating,
 	LTitle = Game.
+
+getratingofgameandname(Game,GameTitleandRating) :-
+	getgame(Game,O),
+	xpath(O,//'Game',P),
+	xpath(P,//'Rating',X),
+	xpath(P,//'GameTitle',Y),
+	
+	
+	X = element('Rating',[],[Rating]),
+	Y = element('GameTitle',[],[Title]),
+	
+	atom_number(Rating, IntRating),
+	
+	GameTitleandRating = [IntRating,Title].
+	
+gethighestrating(Game,GameTitle,Rating)	:-
+	findall(G,getratingofgameandname(Game,G),All),
+	sort(0,@>=,All,[[Rating,GameTitle]|_]).
+	 
+getdescriptionofconsole(Console,Description) :-
+	getplatformlist(O),
+		
+	xpath(O,//'Platforms',P),
+	xpath(P,//'Platform',X),
+	xpath(X,//'name',Y),
+	xpath(X,//'id',Z),
+	
+	Y = element('name',[],[ConsoleName]),
+	atom_length(Console,Length),
+	downcase_atom(Console,LConsole),
+	downcase_atom(ConsoleName,LConsoleName),
+	sub_string(LConsoleName, _, Length, _, LConsole),
+	Z = element('id',[],[ID]),
+	 
+	getplatform(ID,O2),
+	xpath(O2,//'Platform',Platform),
+	xpath(Platform,//'overview',Overview),
+	
+	Overview = element('overview',[],[Description]).
+
+	
+	
+	
+	
+showvideoofgame(Game) :-	
+	getexactgame(Game,O),
+	xpath(O,//'Game',P),
+	xpath(P,//'Youtube',X),
+	
+	
+	X = element('Youtube',[],[Url]),
+	
+	process_create(path(vlc), [Url, 'vlc://quit','--fullscreen'], []).
 	
 showvideoofgame(Game) :-	
 	getgame(Game,O),
@@ -127,25 +213,26 @@ showvideoofgame(Game) :-
 	
 	process_create(path(vlc), [Url, 'vlc://quit','--fullscreen'], []).
 	
-getpictureofgame(Game, F) :-
+getpicturesofgame(Game, Pictures) :-
 	getgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(O,//'baseImgUrl',X),
-	xpath(P,//'Images',Y),
+	xpath(P,//'Images',Y).
 	
-	removehead(Y,F).
 	
 	%X = element('baseImgUrl',[],[Baseurl]),
-	%Y = element('Images',[],[Henk]).
+	%Y = element('Images',[],[Bleh]).
 	%atomic_list_concat(List,' ',NewGame).
 	%atom_concat(Baseurl,Extendurl,Url).
 	
 	%process_create(path(vlc), [Url, 'vlc://quit', '--fullscreen'], []).
-	
-
-	
+		
 
 itsame :-
 		process_create(path(vlc), ['Person.wav', 'vlc://quit', '--qt-start-minimized'], []).
 
-removehead([_|Tail], Tail).
+substring(X,S) :-
+  append(_,T,S) ,
+  append(X,_,T) ,
+  X \= []
+  .
