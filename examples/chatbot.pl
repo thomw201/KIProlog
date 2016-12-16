@@ -154,8 +154,8 @@ category([
 
 %show picture of game
 category([
-	pattern([star(_), show, a, picture, of, star(Game),'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),showpicturesofgame(NewGame))),'Here', are, some, pictures, of, Game, '.'])
+	pattern([star(_), picture, of, star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),showpicturesofgame(NewGame))),'Here', is, a, picture, of, Game, '.'])
 ]).
 
 %show a video of game
