@@ -43,6 +43,12 @@ getplatform(ID,Out):-
    load_xml(stream(Xml),Out,[]),
    close(Xml).
 
+getplatformgamelist(ID,Out):-
+   format(atom(HREF),'http://thegamesdb.net/api/GetPlatformGames.php?platform=~s',[ID]),
+   http_open(HREF, Xml, []),
+   %copy_stream_data(Xml, user_output),
+   load_xml(stream(Xml),Out,[]),
+   close(Xml).  
    
 %you can only get the platform information of a game here, not the otherway around.   
 getplatformofgame(Game,Platform) :-
@@ -150,6 +156,46 @@ getratingofgame(Game, Rating) :-
 	
 	LRate = Rating,
 	LTitle = Game.
+	
+getplatformid(Console,ID):-
+	getplatformlist(O),
+		
+	xpath(O,//'Platforms',P),
+	xpath(P,//'Platform',X),
+	xpath(X,//'name',Y),
+	xpath(X,//'id',Z),
+	
+	Y = element('name',[],[ConsoleName]),
+	atom_length(Console,Length),
+	downcase_atom(Console,LConsole),
+	downcase_atom(ConsoleName,LConsoleName),
+	sub_string(LConsoleName, _, Length, _, LConsole),
+	Z = element('id',[],[ID]).
+	
+getratingofexactgameandname(Game,GameTitleandRating) :-
+	getexactgame(Game,O),
+	xpath(O,//'Game',P),
+	xpath(P,//'Rating',X),
+	xpath(P,//'GameTitle',Y),
+	
+	
+	X = element('Rating',[],[Rating]),
+	Y = element('GameTitle',[],[Title]),
+	
+	atom_number(Rating, IntRating),
+	
+	GameTitleandRating = [IntRating,Title].
+	
+getratingplatformgame(Platform,GameTitleandRating):-
+	getplatformid(Platform,ID),
+	getplatformgamelist(ID,Out),
+	xpath(Out,//'Game' ,P),
+	xpath(P,//'GameTitle' ,element('GameTitle',[],[GameTitle])),
+	getratingofexactgameandname(GameTitle,GameTitleandRating).
+
+gethighestratingplatform(Platform,GameTitle,Rating)	:-
+	findall(G,getratingplatformgame(Platform,G),All),
+	sort(0,@>=,All,[[Rating,GameTitle]|_]).	
 
 getratingofgameandname(Game,GameTitleandRating) :-
 	getgame(Game,O),
@@ -164,6 +210,7 @@ getratingofgameandname(Game,GameTitleandRating) :-
 	atom_number(Rating, IntRating),
 	
 	GameTitleandRating = [IntRating,Title].
+	
 	
 gethighestrating(Game,GameTitle,Rating)	:-
 	findall(G,getratingofgameandname(Game,G),All),
