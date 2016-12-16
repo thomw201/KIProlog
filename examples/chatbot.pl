@@ -143,19 +143,19 @@ category([
 %get game's rating
 category([
 	pattern([star(_), rating, of,star(Game),'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),getratingofgame(NewGame, Rating))),'The', rating, of, Game, is, Rating])
+	template([think((atomic_list_concat(Game,' ',NewGame),getratingofgame(NewGame, Rating))),Game,has,a,rating,of, Rating])
 ]).
 
 %get favourite x game (example: fav mario game)
 category([
-	pattern([what, is, the, highest, rated, star(Game), game,'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),getfavouritegame(NewGame, Favouritegame))), 'The', highest, rated, game, is, Favouritegame,'!']) %highest rated game with mario in the name
+	pattern([star(_), highest, rated, star(Game), game,'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),gethighestrating(NewGame,GameTitle,Rating))), 'The', highest, rated, Game,game, is, GameTitle,with,a,rating,of,Rating,'!'])
 ]).
 
 %show picture of game
 category([
 	pattern([star(_), picture, of, star(Game),'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),showpicturesofgame(NewGame))),'Here', is, a, picture, of, Game, '.'])
+	template([think((atomic_list_concat(Game,' ',NewGame),showpicturesofgame(NewGame))),'Here', are, some, pictures, of, Game, '.'])
 ]).
 
 %show a video of game
@@ -171,7 +171,7 @@ category([
 
 
 category([
-	pattern([for,what,platform,is,star(Game),'?']),
+	pattern([star(_),what,platform,is,star(Game),'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),getplatformofgame(NewGame,Platform))),Game, has, been, released, on, Platform])
 ]).
 
