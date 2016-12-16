@@ -86,8 +86,9 @@ getdescriptionofgame(Game, Description) :-
 	Y = element('GameTitle',[],[Title]),
 	
 	downcase_atom(Title,LTitle),
+	downcase_atom(Game,LGame),
 	
-	LTitle = Game.
+	LTitle = LGame.
 	
 getplayers(Game, Players) :-
 	getexactgame(Game,O),
@@ -212,14 +213,11 @@ showvideoofgame(Game) :-
 	
 	process_create(path(vlc), [Url, 'vlc://quit','--fullscreen'], []).
 	
-	
-
-	
 getpicturesofgame(Game, Pictures) :-
 	getgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(O,//'baseImgUrl',X),
-	xpath(P,//'Images',Y),
+	xpath(P,//'Images',Y).
 	
 	
 	%X = element('baseImgUrl',[],[Baseurl]),
