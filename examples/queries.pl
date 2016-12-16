@@ -202,7 +202,7 @@ showvideoofgame(Game) :-
 	
 	X = element('Youtube',[],[Url]),
 	
-	process_create(path(vlc), [Url, 'vlc://quit','--fullscreen'], []).
+	process_create(path(vlc), [Url, 'vlc://quit','--fullscreen','--no-video-title-show'], []).
 
 getpictureofgame(Game, Url) :-
          getexactgame(Game,O),
@@ -237,7 +237,7 @@ getpictureofgame(Game, Url) :-
 		 
 showpicturesofgame(Game) :-
 	findall(G,getpictureofgame(Game,G),All),
-	append(All,['vlc://quit','--fullscreen'],Arg),
+	append(All,['vlc://quit','--fullscreen','--no-video-title-show'],Arg),
 	process_create(path(vlc), Arg, []).
 		
 
