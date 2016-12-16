@@ -18,7 +18,7 @@ Questions:
 - Highest rated "gamename" game?
 - Video of "gamename"?
 - Developer of "gamename"?
-- How many players "gamename"?
+- How many players can you play "gamename"?
 - Publisher of "gamename"?
 - Release date of "gamename"?
 - Was "gamename" released?

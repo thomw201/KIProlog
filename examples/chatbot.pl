@@ -22,7 +22,7 @@ category([
 %cant give description of console
 category([
 	pattern([star(_),tell,me,about,the,star(A),'?']),
-	template([think((atomic_list_concat(A,' ',ConsoleName),not(getdescriptionofconsole(ConsoleName, Description)))),'Sorry,','I', do,not,know,that,platform, '.', 'Did',you,spell,it,correctly,'?'])
+	template([think((atomic_list_concat(A,' ',ConsoleName),not(getdescriptionofconsole(ConsoleName, _)))),'Sorry,','I', do,not,know,that,platform, '.', 'Did',you,spell,it,correctly,'?'])
 ]).
 
 
@@ -35,7 +35,7 @@ category([
 %cant give description of game
 category([
 	pattern([star(_),tell,me,about,star(Game),star(_)]),
-	template([think((atomic_list_concat(Game,' ',NewGame),not(getdescriptionofgame(NewGame, Description)))),'Sorry,','I', do,not,know,that,game, '.', 'Did',you,spell,it,correctly,'?'])
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getdescriptionofgame(NewGame, _)))),'Sorry,','I', do,not,know,that,game, '.', 'Did',you,spell,it,correctly,'?'])
 ]).
 
 %ask if user wants more info
@@ -65,7 +65,7 @@ category([
 category([
 	pattern([star(A)]),
     that(['Which',game,do,you,want,to,know,more,about,'?']),
-	template([think((atomic_list_concat(A,' ',NewGame),not(getdescriptionofgame(NewGame, Description)))),'Sorry,', 'I', have,never,heard,of,A,'.'])
+	template([think((atomic_list_concat(A,' ',NewGame),not(getdescriptionofgame(NewGame, _)))),'Sorry,', 'I', have,never,heard,of,A,'.'])
 ]).
 
 %user said no, ask if he wants other information
@@ -93,7 +93,7 @@ category([
 category([
 	pattern([star(A)]),
     that(['Which',console,do,you,want,to,know,more,about,'?']),
-	template([think((atomic_list_concat(A,' ',NewGame),not(getdescriptionofgame(NewGame, Description)))),'Sorry,', 'I', do,not,know,what,the,A,is,'.'])
+	template([think((atomic_list_concat(A,' ',NewGame),not(getdescriptionofgame(NewGame, _)))),'Sorry,', 'I', do,not,know,what,the,A,is,'.'])
 ]).
 
 
@@ -108,13 +108,19 @@ category([
 %give developer of game
 category([
 	pattern([star(_),developer,of,star(Game),'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),not(getdeveloperofgame(NewGame, Developer)))),'Sorry,','I', do, not, know, who, the, developer, of, NewGame, is,'.'])
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getdeveloperofgame(NewGame, _)))),'Sorry,','I', do, not, know, who, the, developer, of, NewGame, is,'.'])
 ]).
 
 %give playable by x players
 category([
-	pattern([star(_),how, many,players, star(Game),'?']),
+	pattern([star(_),how, many,players,can,you,play, star(Game),'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),getplayers(NewGame, Players))),NewGame,can,be,played,with, Players, players, '.'])
+]).
+
+%can't give playable players
+category([
+	pattern([star(_),how, many,players,can,you,play, star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getplayers(NewGame, _)))),'Sorry,','I', do, not, know, any, game,named,NewGame,'.'])
 ]).
 
 %give publisher of game
@@ -123,10 +129,22 @@ category([
 	template([think((atomic_list_concat(Game,' ',NewGame),getpublisher(NewGame, Publisher))),Game, was, published, by, Publisher])
 ]).
 
+%can't give publisher
+category([
+	pattern([star(_),publisher,of,star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getpublisher(NewGame, _)))),'Sorry,','I', do, not, know, any, game,named,NewGame,'.'])
+]).
+
 %give favourite game on the named platform
 category([
-	pattern([star(_), favourite, game, of,star(Platform),'?']),
+	pattern([star(_), favourite, game, on,the,star(Platform),'?']),
 	template([think((atomic_list_concat(Platform,' ',NewPlatform),getfavplatformgame(NewPlatform, Favgame))),'My', favourite, game, on, the, Platform , is , Favgame]) %highest rated game on platform
+]).
+
+%can't fav game of console
+category([
+	pattern([star(_), favourite, game, on,the,star(Platform),'?']),
+	template([think((atomic_list_concat(Platform,' ',NewPlatform),not(getfavplatformgame(NewPlatform, _)))),'Sorry,','I', do, not, know,what,the, Platform,is,'.', 'Did',you,spell,it,correctly,'?'])
 ]).
 
 %give release date of game
@@ -135,10 +153,22 @@ category([
 	template([think((atomic_list_concat(Game,' ',NewGame),getreleasedate(NewGame, Releasedate))),Game, was, released, on, Releasedate,'.'])
 ]).
 
-%give release date of game
+%can't give release date
+category([
+	pattern([star(_), release, date, of,star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getreleasedate(NewGame, _)))),'Sorry,','I', do, not, know, any, game,named,NewGame,'.'])
+]).
+
+%give release date of game 
 category([
 	pattern([star(_),was,star(Game), released,'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),getreleasedate(NewGame, Releasedate))),Game, was, released, on, Releasedate,'.'])
+]).
+
+%can't give release date
+category([
+	pattern([star(_),was,star(Game), released,'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getreleasedate(NewGame, _)))),'Sorry,','I', do,not,know,that,game, '.', 'Did',you,spell,it,correctly,'?'])
 ]).
 
 %get game's rating
@@ -147,10 +177,22 @@ category([
 	template([think((atomic_list_concat(Game,' ',NewGame),getratingofgame(NewGame, Rating))),Game,has,a,rating,of, Rating])
 ]).
 
-%get favourite x game (example: fav mario game)
+%can't give game rating
+category([
+	pattern([star(_), rating, of,star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getratingofgame(NewGame, _)))),'Sorry,','I', cannot,give,you,the,rating,because,'I',do,not,know,any,game,named,Game,'.'])
+]).
+
+% give highest rated x game
 category([
 	pattern([star(_), highest, rated, star(Game), game,'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),gethighestrating(NewGame,GameTitle,Rating))), 'The', highest, rated, Game,game, is, GameTitle,with,a,rating,of,Rating,'!'])
+]).
+
+%can't give highest rated x game
+category([
+	pattern([star(_), highest, rated, star(Game), game,'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(gethighestrating(NewGame,_,_)))),'Sorry,','I', cannot,give,you,the,rating,because,'I',do,not,know,any,'game(s)',named,Game,'.'])
 ]).
 
 %show picture of game
@@ -159,10 +201,22 @@ category([
 	template([think((atomic_list_concat(Game,' ',NewGame),showpicturesofgame(NewGame))),'Here', are, some, pictures, of, Game, '.'])
 ]).
 
+%can't give picture
+category([
+	pattern([star(_), picture, of, star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(showpicturesofgame(NewGame)))),'Sorry,','I', cannot,give,you,any,pictures,because,'I',do,not,know,any,'game(s)',named,Game,'.'])
+]).
+
 %show a video of game
 category([
 	pattern([star(_),video, of,star(Game),'?']),
 	template(['Here', is, a, video, of, Game,think((atomic_list_concat(Game,' ',NewGame),showvideoofgame(NewGame)))])
+]).
+
+%can't show video
+category([
+	pattern([star(_),video, of,star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(showvideoofgame(NewGame)))),'Sorry,','I', do,not,know,any,Game,game, '.', 'Did',you,spell,it,correctly,'?'])
 ]).
 
 category([
@@ -170,10 +224,16 @@ category([
 	template([think(itsame)])
 ]).
 
-
+%give platform of game
 category([
 	pattern([star(_),what,platform,is,star(Game),'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),getplatformofgame(NewGame,Platform))),Game, has, been, released, on, Platform])
+]).
+
+%cant give platform
+category([
+	pattern([star(_),what,platform,is,star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getplatformofgame(NewGame,_)))),'Sorry,','I', do,not,know,that,game, '.', 'Did',you,spell,it,correctly,'?'])
 ]).
 
 %user told me his favourite video game
@@ -197,6 +257,13 @@ category([
     template(['Here', is, a, video, of, A,think((atomic_list_concat(A,' ',NewGame),showvideoofgame(NewGame)))])
 ]).
 
+%cant give the video
+category([
+	pattern([star(A)]),
+	that(['What',game,video,do,you,want,me,to,play,for,you,'?']),
+	template([think((atomic_list_concat(A,' ',NewGame),not(showvideoofgame(NewGame)))),'Sorry,','I', cannot,show,a,video,because,'I',do,not,know,that,game, '.', 'Did',you,spell,it,correctly,'?'])
+]).
+
 %user wants to know the developer of a game
 category([
     pattern([yes]),
@@ -209,6 +276,13 @@ category([
     pattern([star(A)]),
     that(['Okay,',tell,me,the,title,of,the,game,'!']),
     template([think((atomic_list_concat(A,' ',NewGame),getdeveloperofgame(NewGame, Developer))),A, was, developed, by, Developer,'.'])
+]).
+
+%cant give the developer
+category([
+	pattern([star(A)]),
+	that(['Okay,',tell,me,the,title,of,the,game,'!']),
+	template([think((atomic_list_concat(A,' ',NewGame),not(getdeveloperofgame(NewGame, _)))),'Sorry,','I', cannot,give,you,a,developer,because,'I',do,not,know,any,game,named,A,'.'])
 ]).
 
 %user wants to know the rating of a game
@@ -225,6 +299,13 @@ category([
 	template([think((atomic_list_concat(Game,' ',NewGame),getratingofgame(NewGame, Rating))),'The', rating, of, Game, is, Rating])
 ]).
 
+%cant give the rating
+category([
+    pattern([star(Game)]),
+    that(['Okay,',what,is,the,title,of,the,game,'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getratingofgame(NewGame, _)))),'Sorry,','I', cannot,give,you,the,rating,because,'I',do,not,know,any,game,named,Game,'.'])
+]).
+
 %user wants to know the publisher of a game
 category([
     pattern([yes]),
@@ -237,6 +318,13 @@ category([
     pattern([star(Game)]),
     that(['So,',tell,me,the,title,of,the,game,'!']),
 	template([think((atomic_list_concat(Game,' ',NewGame),getpublisher(NewGame, Publisher))),Game, was, published, by, Publisher])
+]).
+
+%cant give the publisher
+category([
+    pattern([star(Game)]),
+    that(['So,',tell,me,the,title,of,the,game,'!']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getratingofgame(NewGame, _)))),'Sorry,','I', cannot,give,you,the,publisher,because,'I',do,not,know,any,game,named,Game,'.'])
 ]).
 
 category([
