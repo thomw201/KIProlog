@@ -14,6 +14,7 @@ Rules:
 Questions:
 
 - Tell me about "gamename"
+- Tell me about the "platform"
 - Picture of "gamename"?
 - Highest rated "gamename" game?
 - Video of "gamename"?
@@ -25,6 +26,7 @@ Questions:
 - Rating of "gamename"?
 - What platform is "gamename"?
 - "information" keyword asks if you want information about a game or console
+- Favourite game on the "platform"?
 - who are you?
 
 
