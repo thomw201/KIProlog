@@ -4,10 +4,11 @@
 :- use_module(library('http/json')).
 
 :- consult([queries]).
-
+:- consult([playsounds]).
 :- consult([alice]).
 
 start :-
+	startup,
     write('Hello, I am a gamebot.'), nl,
     write('Ask me any game-related question!'), nl,
 loop.

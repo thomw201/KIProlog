@@ -241,5 +241,3 @@ showpicturesofgame(Game) :-
 	process_create(path(vlc), Arg, []).
 		
 
-itsame :-
-		process_create(path(vlc), ['Person.wav', 'vlc://quit', '--qt-start-minimized'], []).
