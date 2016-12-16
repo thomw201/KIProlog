@@ -5,7 +5,7 @@ Rules:
 - Start with "start."
 - Quit with "quit"
 - Always end questions with ?
-- Asking about platform is with "the" - example: information about the Nintendo, game is without
+- Asking about platform is with "the" - example: information about the Nintendo Wii, game is without
 - yes/no questions can only be awnsered with yes/no
 - questions can have anything infront of them, as long as the pattern with the <name> matches
 - media is played in VLC, configurations below
