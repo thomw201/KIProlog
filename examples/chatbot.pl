@@ -12,6 +12,19 @@ start :-
     write('Ask me any game-related question!'), nl,
 loop.
 
+%give information according to the given console name
+category([
+    pattern([star(_),tell,me,about,the,star(A),'?']),
+    template([think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description))), Description])
+]).
+
+%cant give description of console
+category([
+	pattern([star(_),tell,me,about,the,star(A),'?']),
+	template([think((atomic_list_concat(A,' ',ConsoleName),not(getdescriptionofconsole(ConsoleName, Description)))),'Sorry,','I', do,not,know,that,platform, '.', 'Did',you,spell,it,correctly,'?'])
+]).
+
+
 %give description of game
 category([
 	pattern([star(_),tell,me,about,star(Game),star(_)]),
@@ -82,11 +95,6 @@ category([
 	template([think((atomic_list_concat(A,' ',NewGame),not(getdescriptionofgame(NewGame, Description)))),'Sorry,', 'I', do,not,know,what,the,A,is,'.'])
 ]).
 
-%give information according to the given console name
-category([
-    pattern([star(_),tell,me,about,the,star(A),platform,'?']),
-    template([think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description))), Description])
-]).
 
 
 
