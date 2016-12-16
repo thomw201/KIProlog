@@ -77,6 +77,12 @@ category([
 	template([think((atomic_list_concat(Game,' ',NewGame),getdeveloperofgame(NewGame, Developer))),Game, was, developed, by, Developer])
 ]).
 
+%give developer of game
+category([
+	pattern([star(_),developer,of,star(Game),'?']),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getdeveloperofgame(NewGame, Developer)))),'Sorry','I', could, not, find, the, develop, of, NewGame])
+]).
+
 %give playable by x players
 category([
 	pattern([star(_),how, many,players, star(Game),'?']),

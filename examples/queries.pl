@@ -56,9 +56,10 @@ getplatformofgame(Game,Platform) :-
 	
 	downcase_atom(Console,LConsole),
 	downcase_atom(Title,LTitle),
+	downcase_atom(Game,LGame),
 	
 	LConsole = Platform,
-	LTitle = Game.
+	LTitle = LGame.
 
 	
 getdeveloperofgame(Game,Developer) :-	
@@ -213,11 +214,12 @@ showvideoofgame(Game) :-
 	
 	process_create(path(vlc), [Url, 'vlc://quit','--fullscreen'], []).
 	
-getpicturesofgame(Game, Pictures) :-
-	getgame(Game,O),
+getpicturesofgame(Game, Y) :-
+	getexactgame(Game,O),
 	xpath(O,//'Game',P),
 	xpath(O,//'baseImgUrl',X),
-	xpath(P,//'Images',Y).
+	xpath(P,//'Images',Y),
+	writeln(Y).
 	
 	
 	%X = element('baseImgUrl',[],[Baseurl]),
