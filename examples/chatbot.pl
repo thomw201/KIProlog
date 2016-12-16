@@ -18,6 +18,11 @@ category([
 	template([think((atomic_list_concat(Game,' ',NewGame),getdescriptionofgame(NewGame, Description))),Description])
 ]).
 
+%cant give description of game
+category([
+	pattern([star(_),tell,me,about,star(Game),star(_)]),
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getdescriptionofgame(NewGame, Description)))),'Sorry,','I', do,not,know,that,game, '.', 'Did',you,spell,it,correctly,'?'])
+]).
 
 %ask if user wants more info
 category([
@@ -42,6 +47,13 @@ category([
 	%template(['it Worked!', A])
 ]).
 
+%cannot information according to the given game name
+category([
+	pattern([star(A)]),
+    that(['Which',game,do,you,want,to,know,more,about,'?']),
+	template([think((atomic_list_concat(A,' ',NewGame),not(getdescriptionofgame(NewGame, Description)))),'Sorry,', 'I', have,never,heard,of,A,'.'])
+]).
+
 %user said no, ask if he wants other information
 category([
     pattern([no]),
@@ -63,12 +75,19 @@ category([
     template([think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description))), Description])
 ]).
 
+%cannot give console info
+category([
+	pattern([star(A)]),
+    that(['Which',console,do,you,want,to,know,more,about,'?']),
+	template([think((atomic_list_concat(A,' ',NewGame),not(getdescriptionofgame(NewGame, Description)))),'Sorry,', 'I', do,not,know,what,the,A,is,'.'])
+]).
 
 %give information according to the given console name
 category([
-    pattern([star(_),can,you,tell,me,about,the,star(A),platform,'?']),
+    pattern([star(_),tell,me,about,the,star(A),platform,'?']),
     template([think((atomic_list_concat(A,' ',ConsoleName),getdescriptionofconsole(ConsoleName, Description))), Description])
 ]).
+
 
 
 %give developer of game
@@ -80,7 +99,7 @@ category([
 %give developer of game
 category([
 	pattern([star(_),developer,of,star(Game),'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),not(getdeveloperofgame(NewGame, Developer)))),'Sorry','I', could, not, find, the, develop, of, NewGame])
+	template([think((atomic_list_concat(Game,' ',NewGame),not(getdeveloperofgame(NewGame, Developer)))),'Sorry,','I', do, not, know, who, the, developer, of, NewGame, is,'.'])
 ]).
 
 %give playable by x players
