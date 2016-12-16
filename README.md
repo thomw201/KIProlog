@@ -26,7 +26,6 @@ Questions:
 - Rating of "gamename"?
 - What platform is "gamename"?
 - "information" keyword asks if you want information about a game or console
-- Favourite game on the "platform"?
 - who are you?
 
 
