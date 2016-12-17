@@ -58,7 +58,6 @@ category([
     pattern([star(A)]),
     that(['Which',game,do,you,want,to,know,more,about,'?']),
     template([think((atomic_list_concat(A,' ',NewGame),getdescriptionofgame(NewGame, Description))),Description])
-	%template(['it Worked!', A])
 ]).
 
 %cannot information according to the given game name
@@ -113,13 +112,13 @@ category([
 
 %give playable by x players
 category([
-	pattern([star(_),how, many,players,can,you,play, star(Game),'?']),
+	pattern([star(_),how, many,players,can,play, star(Game),'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),getplayers(NewGame, Players))),NewGame,can,be,played,with, Players, players, '.'])
 ]).
 
 %can't give playable players
 category([
-	pattern([star(_),how, many,players,can,you,play, star(Game),'?']),
+	pattern([star(_),how, many,players,can,play, star(Game),'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),not(getplayers(NewGame, _)))),'Sorry,','I', do, not, know, any, game,named,NewGame,'.'])
 ]).
 
@@ -135,18 +134,6 @@ category([
 	template([think((atomic_list_concat(Game,' ',NewGame),not(getpublisher(NewGame, _)))),'Sorry,','I', do, not, know, any, game,named,NewGame,'.'])
 ]).
 
-%give favourite game on the named platform
-category([
-	pattern([star(_), favourite, game, on,the,star(Platform),'?']),
-	template([think((atomic_list_concat(Platform,' ',NewPlatform),getfavplatformgame(NewPlatform, Favgame))),'My', favourite, game, on, the, Platform , is , Favgame]) %highest rated game on platform
-]).
-
-%can't fav game of console
-category([
-	pattern([star(_), favourite, game, on,the,star(Platform),'?']),
-	template([think((atomic_list_concat(Platform,' ',NewPlatform),not(getfavplatformgame(NewPlatform, _)))),'Sorry,','I', do, not, know,what,the, Platform,is,'.', 'Did',you,spell,it,correctly,'?'])
-]).
-
 %give release date of game
 category([
 	pattern([star(_), release, date, of,star(Game),'?']),
@@ -157,18 +144,6 @@ category([
 category([
 	pattern([star(_), release, date, of,star(Game),'?']),
 	template([think((atomic_list_concat(Game,' ',NewGame),not(getreleasedate(NewGame, _)))),'Sorry,','I', do, not, know, any, game,named,NewGame,'.'])
-]).
-
-%give release date of game 
-category([
-	pattern([star(_),was,star(Game), released,'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),getreleasedate(NewGame, Releasedate))),Game, was, released, on, Releasedate,'.'])
-]).
-
-%can't give release date
-category([
-	pattern([star(_),was,star(Game), released,'?']),
-	template([think((atomic_list_concat(Game,' ',NewGame),not(getreleasedate(NewGame, _)))),'Sorry,','I', do,not,know,that,game, '.', 'Did',you,spell,it,correctly,'?'])
 ]).
 
 %get game's rating
